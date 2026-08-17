@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FusionXpark GB10 — для интеграторов и НИИ</title>
+<style>
+  :root {
+    --bg: #eef1f4;
+    --surface: #ffffff;
+    --surface-2: #e6eaef;
+    --text: #1a2130;
+    --text-muted: #55606f;
+    --text-faint: #8993a4;
+    --accent: #1f4fd8;
+    --accent-ink: #ffffff;
+    --accent-2: #c65a2e;
+    --rule: #c9cfd8;
+    --rule-strong: #aab2c0;
+    --focus: #1f4fd8;
+    --danger: #b3261e;
+    --shadow: 0 1px 2px rgba(20, 28, 45, 0.06), 0 8px 24px rgba(20, 28, 45, 0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1420;
+      --surface: #161d2c;
+      --surface-2: #1b2334;
+      --text: #e7ebf2;
+      --text-muted: #99a3b7;
+      --text-faint: #6d7789;
+      --accent: #5b82ff;
+      --accent-ink: #0b0f18;
+      --accent-2: #e08a4f;
+      --rule: #2a3348;
+      --rule-strong: #384260;
+      --focus: #5b82ff;
+      --danger: #ff6b60;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0f1420;
+    --surface: #161d2c;
+    --surface-2: #1b2334;
+    --text: #e7ebf2;
+    --text-muted: #99a3b7;
+    --text-faint: #6d7789;
+    --accent: #5b82ff;
+    --accent-ink: #0b0f18;
+    --accent-2: #e08a4f;
+    --rule: #2a3348;
+    --rule-strong: #384260;
+    --focus: #5b82ff;
+    --danger: #ff6b60;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  :root[data-theme="light"] {
+    --bg: #eef1f4;
+    --surface: #ffffff;
+    --surface-2: #e6eaef;
+    --text: #1a2130;
+    --text-muted: #55606f;
+    --text-faint: #8993a4;
+    --accent: #1f4fd8;
+    --accent-ink: #ffffff;
+    --accent-2: #c65a2e;
+    --rule: #c9cfd8;
+    --rule-strong: #aab2c0;
+    --focus: #1f4fd8;
+    --danger: #b3261e;
+    --shadow: 0 1px 2px rgba(20, 28, 45, 0.06), 0 8px 24px rgba(20, 28, 45, 0.05);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; padding: 0; overflow-x: hidden; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-weight: 600;
+    color: var(--text);
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .mono {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 0.85em;
+    height: 1px;
+    background: var(--accent);
+    display: inline-block;
+  }
+  .eyebrow.on-dark { color: #f2b184; }
+  .eyebrow.on-dark::before { background: #f2b184; }
+
+  a { color: var(--accent); }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---------- corner registration marks (engineering-drawing motif) ---------- */
+  .plate {
+    position: relative;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+  }
+  .plate::before, .plate::after,
+  .plate .corner-br, .plate .corner-bl {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+  }
+  .plate::before {
+    top: -1px; left: -1px;
+    border-top: 2px solid var(--rule-strong);
+    border-left: 2px solid var(--rule-strong);
+  }
+  .plate::after {
+    top: -1px; right: -1px;
+    border-top: 2px solid var(--rule-strong);
+    border-right: 2px solid var(--rule-strong);
+  }
+  .plate .corner-bl {
+    bottom: -1px; left: -1px;
+    border-bottom: 2px solid var(--rule-strong);
+    border-left: 2px solid var(--rule-strong);
+  }
+  .plate .corner-br {
+    bottom: -1px; right: -1px;
+    border-bottom: 2px solid var(--rule-strong);
+    border-right: 2px solid var(--rule-strong);
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(6px);
+  }
+  .topbar .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .wordmark {
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .wordmark span {
+    font-size: 0.68rem;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+  }
+  .topbar .nav-cta {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    padding: 8px 16px;
+    white-space: nowrap;
+  }
+  .topbar .nav-cta:hover { background: var(--accent); color: var(--accent-ink); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding: 76px 0 64px;
+    background-image:
+      linear-gradient(var(--rule) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 34px 34px;
+    background-position: center top;
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 78%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 0%, black 78%, transparent 100%);
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .hero h1 {
+    font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+    line-height: 1.16;
+    letter-spacing: -0.01em;
+  }
+  .hero .sub {
+    margin-top: 20px;
+    font-size: 1.08rem;
+    color: var(--text-muted);
+    max-width: 46ch;
+  }
+  .hero .cta-block { margin-top: 32px; }
+  .btn-primary {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    padding: 15px 30px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-primary:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-primary { transition: none; }
+    .btn-primary:hover { transform: none; }
+  }
+  .cta-caption {
+    display: block;
+    margin-top: 12px;
+    font-size: 0.82rem;
+    color: var(--text-faint);
+  }
+
+  /* device photo frame */
+  .device-fig { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .device-fig .plate {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .device-fig img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background: var(--surface-2);
+  }
+  .device-fig figcaption {
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+
+  section { padding: 64px 0; }
+  .section-head { margin-bottom: 32px; max-width: 62ch; }
+  .section-head h2 { font-size: clamp(1.4rem, 2.4vw, 1.85rem); }
+
+  /* ---------- product block ---------- */
+  .product-copy {
+    padding: 36px;
+    font-size: 1.02rem;
+    color: var(--text-muted);
+  }
+  .product-copy p { margin: 0; }
+  .product-copy strong { color: var(--text); }
+
+  .spec-table {
+    margin-top: 28px;
+    width: 100%;
+    overflow-x: auto;
+  }
+  table.datasheet {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+  table.datasheet caption {
+    text-align: left;
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    padding: 0 36px 12px;
+  }
+  table.datasheet td {
+    padding: 13px 36px;
+    border-top: 1px solid var(--rule);
+  }
+  table.datasheet tr:last-child td { border-bottom: 1px solid var(--rule); }
+  table.datasheet td.label {
+    color: var(--text-muted);
+    width: 38%;
+    white-space: nowrap;
+  }
+  table.datasheet td.value {
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ---------- connectx feature banner ---------- */
+  .feature-banner {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 0;
+  }
+  .feature-banner .fb-media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-right: 1px solid var(--rule);
+  }
+  .feature-banner .fb-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background: var(--surface-2);
+  }
+  .feature-banner .fb-copy {
+    padding: 36px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .feature-banner .fb-copy h3 { font-size: 1.2rem; }
+  .feature-banner .fb-copy p {
+    margin-top: 14px;
+    color: var(--text-muted);
+    font-size: 0.98rem;
+  }
+  .feature-banner .fb-copy p b { color: var(--text); }
+
+  /* ---------- advantages ---------- */
+  .adv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+  }
+  .adv-col {
+    background: var(--surface);
+    padding: 32px 36px 36px;
+  }
+  .adv-col h3 {
+    font-size: 1.15rem;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .adv-col .tag {
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--accent-2);
+    text-transform: uppercase;
+  }
+  .adv-list {
+    list-style: none;
+    margin: 22px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .adv-list li {
+    display: flex;
+    gap: 12px;
+    color: var(--text-muted);
+    font-size: 0.97rem;
+  }
+  .adv-list svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    color: var(--accent);
+  }
+  .adv-list b { color: var(--text); font-weight: 600; }
+
+  /* ---------- stat banner (macro shot) ---------- */
+  .stat-banner {
+    position: relative;
+    padding: 88px 0;
+    background: #0b0f18;
+    background-size: cover;
+    background-position: center;
+    isolation: isolate;
+  }
+  .stat-banner img.bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+  .stat-banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, rgba(9,12,20,0.92) 0%, rgba(9,12,20,0.78) 45%, rgba(9,12,20,0.55) 100%);
+    z-index: -1;
+  }
+  .stat-banner .wrap { color: #f4f6fa; }
+  .stat-banner .stat-num {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: clamp(3rem, 8vw, 5.2rem);
+    line-height: 1;
+    margin-top: 16px;
+    letter-spacing: -0.01em;
+  }
+  .stat-banner .stat-num span.mono {
+    font-size: 0.32em;
+    color: #c7cedd;
+    margin-left: 14px;
+    letter-spacing: 0.02em;
+    vertical-align: middle;
+  }
+  .stat-banner p.stat-sub {
+    margin-top: 18px;
+    max-width: 48ch;
+    color: #c7cedd;
+    font-size: 1.02rem;
+  }
+
+  /* ---------- form ---------- */
+  .form-section { padding-top: 20px; padding-bottom: 88px; }
+  .form-plate {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 44px 40px 40px;
+  }
+  .form-plate .section-head { max-width: none; text-align: center; margin: 0 auto 30px; }
+  .form-plate .section-head h2 { font-size: 1.5rem; }
+  .form-plate .section-head p {
+    margin-top: 10px;
+    color: var(--text-muted);
+    font-size: 0.98rem;
+  }
+
+  .field { margin-bottom: 20px; }
+  .field label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 7px;
+  }
+  .field label .opt {
+    font-weight: 400;
+    color: var(--text-faint);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .field input[type="text"],
+  .field input[type="tel"],
+  .field input[type="email"],
+  .field select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--rule-strong);
+    background: var(--surface-2);
+    color: var(--text);
+    font-size: 0.98rem;
+    font-family: inherit;
+  }
+  .field input::placeholder { color: var(--text-faint); }
+  .field select { appearance: none; background-image: none; }
+
+  .form-error {
+    margin: 0 0 20px;
+    padding: 12px 14px;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    font-size: 0.88rem;
+  }
+
+  .btn-submit {
+    width: 100%;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+    padding: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+  .btn-submit:hover { filter: brightness(1.08); }
+  .btn-submit:disabled { opacity: 0.6; cursor: default; }
+
+  .success {
+    text-align: center;
+    padding: 20px 0 4px;
+  }
+  .success svg { width: 34px; height: 34px; color: var(--accent); margin-bottom: 14px; }
+  .success p { color: var(--text-muted); font-size: 0.98rem; margin: 0; }
+  .hidden { display: none !important; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 26px 0;
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+  }
+
+  @media (max-width: 760px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .device-fig { order: -1; }
+    .feature-banner { grid-template-columns: 1fr; }
+    .feature-banner .fb-media { border-right: none; border-bottom: 1px solid var(--rule); aspect-ratio: 16 / 10; }
+    .adv-grid { grid-template-columns: 1fr; }
+    .form-plate { padding: 34px 24px 30px; }
+    table.datasheet td { padding: 12px 20px; }
+    table.datasheet caption { padding: 0 20px 12px; }
+    .stat-banner { padding: 64px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="wordmark">FUSIONXPARK <span>GB10 · KZ</span></div>
+    <a class="nav-cta" href="#form">Оставить заявку</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <div class="eyebrow">Для интеграторов и НИИ</div>
+        <h1 style="margin-top: 16px;">AI‑инфраструктура для интеграторов и научных институтов Казахстана</h1>
+        <p class="sub">FusionXpark — готовый к внедрению AI‑компьютер: для интеграторов — решение под ключ с моделью апсейла, для НИИ — мощность для обучения собственных моделей без чужого облака.</p>
+        <div class="cta-block">
+          <a class="btn-primary" href="#form">Оставить заявку</a>
+          <span class="cta-caption">Ответим и проконсультируем по всем интересующим вопросам</span>
+        </div>
+      </div>
+      <figure class="device-fig">
+        <div class="plate">
+          <span class="corner-bl"></span><span class="corner-br"></span>
+          <img src="images/hero.jpg" alt="FusionXpark GB10 — компактный AI-компьютер">
+        </div>
+        <figcaption>150 × 150 × 50,5 мм&nbsp;·&nbsp;~1,2 кг&nbsp;·&nbsp;GB10 Grace&nbsp;Blackwell</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Продукт</div>
+        <h2 style="margin-top: 14px;">Что такое FusionXpark GB10</h2>
+      </div>
+      <div class="plate">
+        <span class="corner-bl"></span><span class="corner-br"></span>
+        <div class="product-copy">
+          <p>FusionXpark GB10 — компактный AI‑компьютер на базе чипа <strong>NVIDIA GB10 Grace Blackwell</strong>. Работает как обычный настольный компьютер, но по мощности приближается к небольшому AI‑суперкомпьютеру: до <strong>1000 AI TOPS</strong>, <strong>128 ГБ Unified Memory</strong>, полноценная работа с моделями до <strong>200 млрд параметров</strong> — локально, без обязательного облака. Два юнита можно объединить через <strong>ConnectX</strong> и увеличить мощность до <strong>405 млрд параметров</strong> без замены оборудования. Устройство поставляется с предустановленным NVIDIA AI Software Stack — готово к работе сразу после подключения.</p>
+        </div>
+        <div class="spec-table">
+          <table class="datasheet">
+            <caption>Технические характеристики</caption>
+            <tbody>
+              <tr><td class="label">Чип</td><td class="value">NVIDIA GB10 Grace Blackwell</td></tr>
+              <tr><td class="label">Производительность</td><td class="value">до 1000 AI TOPS</td></tr>
+              <tr><td class="label">Память</td><td class="value">128 ГБ Unified Memory</td></tr>
+              <tr><td class="label">Модели</td><td class="value">до 200 млрд параметров (до 405 млрд — два юнита через ConnectX)</td></tr>
+              <tr><td class="label">Габариты / вес</td><td class="value">150×150×50,5 мм / ~1,2 кг</td></tr>
+              <tr><td class="label">ПО</td><td class="value">Предустановленный NVIDIA AI Software Stack</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top: 0;">
+    <div class="wrap">
+      <div class="plate feature-banner">
+        <span class="corner-bl"></span><span class="corner-br"></span>
+        <div class="fb-media">
+          <img src="images/stacked.jpg" alt="Два юнита FusionXpark GB10, объединённые через ConnectX">
+        </div>
+        <div class="fb-copy">
+          <div class="eyebrow">ConnectX</div>
+          <h3 style="margin-top: 12px;">Два юнита — один кластер</h3>
+          <p>Второй FusionXpark подключается через ConnectX и увеличивает мощность до <b>405 млрд параметров</b> — без замены оборудования. Для интегратора это готовая точка повторной продажи, для НИИ и лаборатории — рост мощности вместе с задачами.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Преимущества</div>
+        <h2 style="margin-top: 14px;">Почему выбирают FusionXpark</h2>
+      </div>
+      <div class="plate">
+        <span class="corner-bl"></span><span class="corner-br"></span>
+        <div class="adv-grid">
+          <div class="adv-col">
+            <h3>Для интеграторов <span class="tag">внедрение</span></h3>
+            <ul class="adv-list">
+              <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l3.5 3.5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Внедряется клиенту <b>за дни, а не месяцы</b> — благодаря предустановленному AI software stack</span></li>
+              <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l3.5 3.5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Готовая модель апсейла</b>: клиент возвращается за вторым юнитом для роста мощности</span></li>
+              <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l3.5 3.5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Понятная маржа</b> на растущей нише AI‑оборудования для образования и науки</span></li>
+            </ul>
+          </div>
+          <div class="adv-col">
+            <h3>Для НИИ <span class="tag">исследования</span></h3>
+            <ul class="adv-list">
+              <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l3.5 3.5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Полный контроль</b> над весами и архитектурой модели — реальный fine‑tuning, а не только промптинг</span></li>
+              <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l3.5 3.5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Исследовательские данные не покидают периметр</b> института</span></li>
+              <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l3.5 3.5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Мощность для моделей уровня <b>70–200 млрд параметров</b> (до 405 млрд — с двумя юнитами)</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stat-banner">
+    <img class="bg" src="images/macro.jpg" alt="">
+    <div class="wrap">
+      <div class="eyebrow on-dark">Производительность</div>
+      <div class="stat-num mono">1000<span class="mono">AI TOPS</span></div>
+      <p class="stat-sub">Вычислительная мощность настольного формата — на архитектуре NVIDIA Grace Blackwell, без выделенного ЦОД и без облачных квот.</p>
+    </div>
+  </section>
+
+  <section class="form-section" id="form">
+    <div class="wrap">
+      <div class="plate form-plate">
+        <span class="corner-bl"></span><span class="corner-br"></span>
+
+        <div id="form-state">
+          <div class="section-head">
+            <h2>Оставьте заявку — проконсультируем по всем интересующим вопросам</h2>
+          </div>
+
+          <p id="form-error" class="form-error hidden"></p>
+
+          <form id="lead-form" novalidate>
+            <div class="field">
+              <label for="fio">ФИО</label>
+              <input type="text" id="fio" name="fio" required autocomplete="name" placeholder="Иванов Иван Иванович">
+            </div>
+            <div class="field">
+              <label for="phone">Телефон</label>
+              <input type="tel" id="phone" name="phone" required autocomplete="tel" placeholder="+7 (7__) ___-__-__">
+            </div>
+            <div class="field">
+              <label for="sector">В каком секторе вы работаете? <span class="opt">— необязательно</span></label>
+              <select id="sector" name="sector">
+                <option value="">Не указано</option>
+                <option value="integrator">Системный интегратор</option>
+                <option value="nii">НИИ</option>
+                <option value="other">Другое</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="email">Email <span class="opt">— необязательно</span></label>
+              <input type="email" id="email" name="email" autocomplete="email" placeholder="you@company.kz">
+            </div>
+
+            <button type="submit" class="btn-submit" id="submit-btn">Отправить заявку</button>
+          </form>
+        </div>
+
+        <div id="form-success" class="success hidden">
+          <svg viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="15.5" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 17.5l4 4 9-9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h2 style="font-size: 1.25rem;">Спасибо! Заявка получена</h2>
+          <p>Мы свяжемся с вами в ближайшее время.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>FUSIONXPARK GB10</span>
+    <span>Казахстан · интеграторы &amp; НИИ</span>
+  </div>
+</footer>
+
+<script>
+  var form = document.getElementById('lead-form');
+  var submitBtn = document.getElementById('submit-btn');
+  var errorBox = document.getElementById('form-error');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errorBox.classList.add('hidden');
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    var payload = {
+      fio: document.getElementById('fio').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      sector: document.getElementById('sector').value,
+      email: document.getElementById('email').value.trim()
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправка…';
+
+    fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('request failed');
+        document.getElementById('form-state').classList.add('hidden');
+        document.getElementById('form-success').classList.remove('hidden');
+      })
+      .catch(function () {
+        errorBox.textContent = 'Не удалось отправить заявку. Попробуйте ещё раз чуть позже.';
+        errorBox.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Отправить заявку';
+      });
+  });
+</script>
+</body>
+</html>
