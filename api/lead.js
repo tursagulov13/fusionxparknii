@@ -17,12 +17,8 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const { fio, phone, sector, email } = req.body || {};
-
-  if (!fio || !String(fio).trim() || !phone || !String(phone).trim()) {
-    res.status(400).json({ ok: false, error: 'missing_required_fields' });
-    return;
-  }
+  const body = req.body || {};
+  const isPartner = body.type === 'partner';
 
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
@@ -32,17 +28,46 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const lines = [
-    '<b>Новая заявка — FusionXpark (интеграторы / НИИ)</b>',
-    '',
-    '<b>ФИО:</b> ' + escapeHtml(fio),
-    '<b>Телефон:</b> ' + escapeHtml(phone)
-  ];
-  if (sector && SECTOR_LABELS[sector]) {
-    lines.push('<b>Сектор:</b> ' + escapeHtml(SECTOR_LABELS[sector]));
-  }
-  if (email && String(email).trim()) {
-    lines.push('<b>Email:</b> ' + escapeHtml(email));
+  let lines;
+
+  if (isPartner) {
+    const { firstName, lastName, phone, email } = body;
+
+    if (!firstName || !String(firstName).trim() || !lastName || !String(lastName).trim() || !phone || !String(phone).trim()) {
+      res.status(400).json({ ok: false, error: 'missing_required_fields' });
+      return;
+    }
+
+    lines = [
+      '<b>Новая заявка — Стать партнёром</b>',
+      '',
+      '<b>Имя:</b> ' + escapeHtml(firstName),
+      '<b>Фамилия:</b> ' + escapeHtml(lastName),
+      '<b>Телефон:</b> ' + escapeHtml(phone)
+    ];
+    if (email && String(email).trim()) {
+      lines.push('<b>Email:</b> ' + escapeHtml(email));
+    }
+  } else {
+    const { fio, phone, sector, email } = body;
+
+    if (!fio || !String(fio).trim() || !phone || !String(phone).trim()) {
+      res.status(400).json({ ok: false, error: 'missing_required_fields' });
+      return;
+    }
+
+    lines = [
+      '<b>Новая заявка — FusionXpark</b>',
+      '',
+      '<b>ФИО:</b> ' + escapeHtml(fio),
+      '<b>Телефон:</b> ' + escapeHtml(phone)
+    ];
+    if (sector && SECTOR_LABELS[sector]) {
+      lines.push('<b>Сектор:</b> ' + escapeHtml(SECTOR_LABELS[sector]));
+    }
+    if (email && String(email).trim()) {
+      lines.push('<b>Email:</b> ' + escapeHtml(email));
+    }
   }
 
   try {

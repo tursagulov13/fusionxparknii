@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FusionXpark GB10 — для интеграторов и НИИ</title>
+<title>FusionXpark GB10 — AI‑инфраструктура для НИИ Казахстана</title>
 <style>
   :root {
     --bg: #eef1f4;
@@ -531,6 +531,58 @@
   .success p { color: var(--text-muted); font-size: 0.98rem; margin: 0; }
   .hidden { display: none !important; }
 
+  /* ---------- partner CTA ---------- */
+  .partner-cta { padding-top: 0; padding-bottom: 88px; }
+  .partner-plate { padding: 34px 40px; }
+  .partner-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+  }
+  .partner-inner h3 { font-size: 1.15rem; }
+  .partner-inner p {
+    margin-top: 8px;
+    color: var(--text-muted);
+    font-size: 0.96rem;
+    max-width: 46ch;
+  }
+  .partner-inner .btn-primary { flex: none; white-space: nowrap; }
+
+  /* ---------- partner modal ---------- */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 14, 22, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 100;
+  }
+  .modal {
+    max-width: 480px;
+    width: 100%;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    padding: 44px 36px 34px;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--text-faint);
+    cursor: pointer;
+  }
+  .modal-close:hover { color: var(--text); }
+
   footer {
     border-top: 1px solid var(--rule);
     padding: 26px 0;
@@ -554,6 +606,10 @@
     table.datasheet td { padding: 12px 20px; }
     table.datasheet caption { padding: 0 20px 12px; }
     .stat-banner { padding: 64px 0; }
+    .partner-plate { padding: 28px 24px; }
+    .partner-inner { flex-direction: column; align-items: flex-start; }
+    .partner-inner .btn-primary { width: 100%; text-align: center; }
+    .modal { padding: 40px 24px 28px; }
   }
 </style>
 </head>
@@ -570,9 +626,9 @@
   <section class="hero">
     <div class="wrap hero-inner">
       <div>
-        <div class="eyebrow">Для интеграторов и НИИ</div>
-        <h1 style="margin-top: 16px;">AI‑инфраструктура для интеграторов и научных институтов Казахстана</h1>
-        <p class="sub">FusionXpark — готовый к внедрению AI‑компьютер: для интеграторов — решение под ключ с моделью апсейла, для НИИ — мощность для обучения собственных моделей без чужого облака.</p>
+        <div class="eyebrow">FusionXpark GB10</div>
+        <h1 style="margin-top: 16px;">AI‑инфраструктура научных и исследовательских институтов Казахстана</h1>
+        <p class="sub">FusionXpark — готовый к внедрению AI‑компьютер с мощностью для обучения собственных моделей без чужого облака.</p>
         <div class="cta-block">
           <a class="btn-primary" href="#form">Оставить заявку</a>
           <span class="cta-caption">Ответим и проконсультируем по всем интересующим вопросам</span>
@@ -642,7 +698,6 @@
         <span class="corner-bl"></span><span class="corner-br"></span>
         <div class="adv-grid">
           <div class="adv-col">
-            <h3>Для интеграторов <span class="tag">внедрение</span></h3>
             <ul class="adv-list">
               <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l3.5 3.5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Внедряется клиенту <b>за дни, а не месяцы</b> — благодаря предустановленному AI software stack</span></li>
               <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l3.5 3.5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Готовая модель апсейла</b>: клиент возвращается за вторым юнитом для роста мощности</span></li>
@@ -650,7 +705,6 @@
             </ul>
           </div>
           <div class="adv-col">
-            <h3>Для НИИ <span class="tag">исследования</span></h3>
             <ul class="adv-list">
               <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l3.5 3.5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Полный контроль</b> над весами и архитектурой модели — реальный fine‑tuning, а не только промптинг</span></li>
               <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l3.5 3.5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Исследовательские данные не покидают периметр</b> института</span></li>
@@ -718,7 +772,66 @@
       </div>
     </div>
   </section>
+
+  <section class="partner-cta">
+    <div class="wrap">
+      <div class="plate partner-plate">
+        <span class="corner-bl"></span><span class="corner-br"></span>
+        <div class="partner-inner">
+          <div>
+            <div class="eyebrow">Партнёрство</div>
+            <h3 style="margin-top: 10px;">Хотите интегрировать это сами?</h3>
+            <p>Подключим вас как партнёра по внедрению FusionXpark — расскажем об условиях и поддержке.</p>
+          </div>
+          <button type="button" class="btn-primary" id="partner-open-btn">Стать партнёром</button>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
+
+<div class="modal-overlay hidden" id="partner-modal-overlay">
+  <div class="modal plate" id="partner-modal">
+    <span class="corner-bl"></span><span class="corner-br"></span>
+    <button type="button" class="modal-close" id="partner-close-btn" aria-label="Закрыть">&times;</button>
+
+    <div id="partner-form-state">
+      <div class="section-head" style="max-width: none; margin-bottom: 22px;">
+        <h2 style="font-size: 1.3rem;">Стать партнёром</h2>
+        <p style="margin-top: 8px; color: var(--text-muted); font-size: 0.94rem;">Оставьте контакты — расскажем об условиях партнёрства.</p>
+      </div>
+
+      <p id="partner-form-error" class="form-error hidden"></p>
+
+      <form id="partner-form" novalidate>
+        <div class="field">
+          <label for="partner-first-name">Имя</label>
+          <input type="text" id="partner-first-name" name="firstName" required autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label for="partner-last-name">Фамилия</label>
+          <input type="text" id="partner-last-name" name="lastName" required autocomplete="family-name">
+        </div>
+        <div class="field">
+          <label for="partner-phone">Телефон</label>
+          <input type="tel" id="partner-phone" name="phone" required autocomplete="tel" placeholder="+7 (7__) ___-__-__">
+        </div>
+        <div class="field">
+          <label for="partner-email">Почта <span class="opt">— необязательно</span></label>
+          <input type="email" id="partner-email" name="email" autocomplete="email" placeholder="you@company.kz">
+        </div>
+
+        <button type="submit" class="btn-submit" id="partner-submit-btn">Отправить заявку</button>
+      </form>
+    </div>
+
+    <div id="partner-form-success" class="success hidden">
+      <svg viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="15.5" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 17.5l4 4 9-9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h2 style="font-size: 1.25rem;">Спасибо! Заявка получена</h2>
+      <p>Мы свяжемся с вами в ближайшее время.</p>
+    </div>
+  </div>
+</div>
 
 <footer>
   <div class="wrap">
@@ -766,6 +879,67 @@
         errorBox.classList.remove('hidden');
         submitBtn.disabled = false;
         submitBtn.textContent = 'Отправить заявку';
+      });
+  });
+
+  var partnerOpenBtn = document.getElementById('partner-open-btn');
+  var partnerCloseBtn = document.getElementById('partner-close-btn');
+  var partnerOverlay = document.getElementById('partner-modal-overlay');
+  var partnerForm = document.getElementById('partner-form');
+  var partnerSubmitBtn = document.getElementById('partner-submit-btn');
+  var partnerErrorBox = document.getElementById('partner-form-error');
+
+  function openPartnerModal() {
+    partnerOverlay.classList.remove('hidden');
+  }
+  function closePartnerModal() {
+    partnerOverlay.classList.add('hidden');
+  }
+
+  partnerOpenBtn.addEventListener('click', openPartnerModal);
+  partnerCloseBtn.addEventListener('click', closePartnerModal);
+  partnerOverlay.addEventListener('click', function (e) {
+    if (e.target === partnerOverlay) closePartnerModal();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closePartnerModal();
+  });
+
+  partnerForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    partnerErrorBox.classList.add('hidden');
+
+    if (!partnerForm.checkValidity()) {
+      partnerForm.reportValidity();
+      return;
+    }
+
+    var partnerPayload = {
+      type: 'partner',
+      firstName: document.getElementById('partner-first-name').value.trim(),
+      lastName: document.getElementById('partner-last-name').value.trim(),
+      phone: document.getElementById('partner-phone').value.trim(),
+      email: document.getElementById('partner-email').value.trim()
+    };
+
+    partnerSubmitBtn.disabled = true;
+    partnerSubmitBtn.textContent = 'Отправка…';
+
+    fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(partnerPayload)
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('request failed');
+        document.getElementById('partner-form-state').classList.add('hidden');
+        document.getElementById('partner-form-success').classList.remove('hidden');
+      })
+      .catch(function () {
+        partnerErrorBox.textContent = 'Не удалось отправить заявку. Попробуйте ещё раз чуть позже.';
+        partnerErrorBox.classList.remove('hidden');
+        partnerSubmitBtn.disabled = false;
+        partnerSubmitBtn.textContent = 'Отправить заявку';
       });
   });
 </script>
