@@ -1,9 +1,3 @@
-const SECTOR_LABELS = {
-  integrator: 'Системный интегратор',
-  nii: 'НИИ',
-  other: 'Другое'
-};
-
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -62,8 +56,8 @@ module.exports = async (req, res) => {
       '<b>ФИО:</b> ' + escapeHtml(fio),
       '<b>Телефон:</b> ' + escapeHtml(phone)
     ];
-    if (sector && SECTOR_LABELS[sector]) {
-      lines.push('<b>Сектор:</b> ' + escapeHtml(SECTOR_LABELS[sector]));
+    if (sector && String(sector).trim()) {
+      lines.push('<b>Сектор:</b> ' + escapeHtml(String(sector).trim()));
     }
     if (email && String(email).trim()) {
       lines.push('<b>Email:</b> ' + escapeHtml(email));
